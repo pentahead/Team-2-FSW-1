@@ -1,4 +1,4 @@
-const  = require("../repositories/Repository");
+const carRepository = require("../repositories/carRepository");
 const { imageUpload, imageDelete } = require("../utils/image-kit");
 const {
   NotFoundError,
@@ -8,7 +8,8 @@ const {
 
 exports.get = async () => {};
 exports.getByID = async () => {};
-exports.create = async () => {};
+exports.createCar = async (data) => {
+  return carRepository.createCar(data);
+};
 exports.updateById = async () => {};
 exports.deleteById = async () => {};
-
