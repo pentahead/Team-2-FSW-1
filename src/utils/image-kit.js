@@ -1,10 +1,13 @@
 const ImageKit = require("imagekit");
+
+// Image kit init
 const imagekit = new ImageKit({
   publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
+// Image upload function to imagekit
 exports.imageUpload = async (file) => {
   const uploadedFile = await imagekit.upload({
     file: file.data,
@@ -12,14 +15,3 @@ exports.imageUpload = async (file) => {
   });
   return uploadedFile?.url;
 };
-
-exports.imageDelete = async (fileid) => {
-    try {
-      const deletedFile = await imagekit.deleteFile(fileid);
-      return deletedFile?.url;
-    } catch (error) {
-      console.error("Error deleting file:", error);
-      throw new Error("Failed to delete file from ImageKit");
-    }
-  };
-
