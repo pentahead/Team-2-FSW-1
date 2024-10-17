@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Available {
+  id               Int     @id @default(autoincrement())
+  available_status String? @db.VarChar(100)
+  Cars             Cars[]
+}
+
+model Cars {
+  id              Int        @id @default(autoincrement())
+  plate           String?    @db.VarChar(25)
+  model_id        Int?
+  rentPerDay      Float?
+  description     String?    @db.VarChar(255)
+  availableAt     DateTime?  @db.Timestamp(6)
+  availability_id Int?
+  year            Int?
+  image           String?    @db.VarChar(255)
+  Available       Available? @relation(fields: [availability_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Models          Models?    @relation(fields: [model_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Manufacture {
+  id                 Int      @id @default(autoincrement())
+  manufacture_name   String?  @db.VarChar(100)
+  manufacture_region String?  @db.VarChar(100)
+  year_establish     Int?
+  Models             Models[]
+}
+
+model Models {
+  id              Int           @id @default(autoincrement())
+  model_name      String?       @db.VarChar(100)
+  transmission_id Int?
+  capacity        Int?
+  type_id         Int?
+  manufacture_id  Int?
+  Cars            Cars[]
+  Manufacture     Manufacture?  @relation(fields: [manufacture_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Transmission    Transmission? @relation(fields: [transmission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Type            Type?         @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+   options        Options[]   // Relasi many-to-many dengan Options
+  specs          Specs[]     // Relasi many-to-many dengan Specs
+}
+
+
+model Options {
+  id          Int     @id @default(autoincrement())
+  option_name String? @db.VarChar(100)
+  models       Models[]   // Relasi many-to-many dengan Models
+}
+
+model Specs {
+  id        Int     @id @default(autoincrement())
+  spec_name String? @db.VarChar(100)
+  models       Models[]   // Relasi many-to-many dengan Models
+}
+
+model Transmission {
+  id                Int      @id @default(autoincrement())
+  transmission_name String?  @db.VarChar(100)
+  Models            Models[]
+}
+
+model Type {
+  id        Int      @id @default(autoincrement())
+  type_name String?  @db.VarChar(100)
+  Models    Models[]
+}
