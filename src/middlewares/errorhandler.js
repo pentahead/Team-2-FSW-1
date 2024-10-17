@@ -1,4 +1,4 @@
-const NotFoundError = require("../utils/request");
+const { NotFoundError } = require("../utils/request");
 
 exports.errorHandler = (err, req, res, next) => {
   console.error(err);

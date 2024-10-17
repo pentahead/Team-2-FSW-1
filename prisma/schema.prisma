@@ -46,21 +46,20 @@ model Models {
   Manufacture     Manufacture?  @relation(fields: [manufacture_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Transmission    Transmission? @relation(fields: [transmission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Type            Type?         @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-   options        Options[]   // Relasi many-to-many dengan Options
-  specs          Specs[]     // Relasi many-to-many dengan Specs
+  options         Options[]     @relation("ModelsToOptions")
+  specs           Specs[]       @relation("ModelsToSpecs")
 }
 
-
 model Options {
-  id          Int     @id @default(autoincrement())
-  option_name String? @db.VarChar(100)
-  models       Models[]   // Relasi many-to-many dengan Models
+  id          Int      @id @default(autoincrement())
+  option_name String?  @db.VarChar(100)
+  models      Models[] @relation("ModelsToOptions")
 }
 
 model Specs {
-  id        Int     @id @default(autoincrement())
-  spec_name String? @db.VarChar(100)
-  models       Models[]   // Relasi many-to-many dengan Models
+  id        Int      @id @default(autoincrement())
+  spec_name String?  @db.VarChar(100)
+  models    Models[] @relation("ModelsToSpecs")
 }
 
 model Transmission {
