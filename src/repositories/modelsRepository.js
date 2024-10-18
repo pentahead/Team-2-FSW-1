@@ -12,7 +12,6 @@ exports.getModels = async (
   spec_name,
   option_name
 ) => {
-  // Define query here
   let query = {
     include: {
       transmission: true,
@@ -23,7 +22,6 @@ exports.getModels = async (
     },
   };
 
-  // It will generate the query
   let orQuery = [];
   if (model) {
     orQuery.push({
@@ -32,7 +30,7 @@ exports.getModels = async (
   }
   if (capacity) {
     orQuery.push({
-      capacity: parseInt(capacity, 10), // Compare capacity as a number
+      capacity: parseInt(capacity, 10),
     });
   }
   if (transmission_name) {
@@ -76,20 +74,13 @@ exports.getModels = async (
       OR: orQuery,
     };
   }
-
-  // Find by query
   const searchedModels = await prisma.models.findMany(query);
-
-  // Convert BigInt fields to string for safe serialization
   const serializedModels = JSONBigInt.stringify(searchedModels);
   return JSONBigInt.parse(serializedModels);
 };
 
 exports.getModelById = async (id) => {
-  // Convert the string ID to an integer
   const modelId = parseInt(id, 10);
-
-  // Find model by ID
   const model = await prisma.Models.findFirst({
     where: {
       id: modelId,
@@ -103,7 +94,6 @@ exports.getModelById = async (id) => {
     },
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedModels = JSONBigInt.stringify(model);
   return JSONBigInt.parse(serializedModels);
 };
@@ -127,14 +117,11 @@ exports.createModel = async (data) => {
       Options: true,
     },
   });
-
-  // Convert BigInt fields to string for safe serialization
   const serializedModels = JSONBigInt.stringify(newModel);
   return JSONBigInt.parse(serializedModels);
 };
 
 exports.updateModel = async (id, data) => {
-  // Find the existing model data
   const updatedModel = await prisma.models.update({
     where: {
       id: Number(id),
