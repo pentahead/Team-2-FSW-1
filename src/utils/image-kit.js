@@ -14,12 +14,11 @@ exports.imageUpload = async (file) => {
 };
 
 // exports.imageDelete = async (fileid) => {
-//     try {
-//       const deletedFile = await imagekit.deleteFile(fileid);
-//       return deletedFile?.url;
-//     } catch (error) {
-//       console.error("Error deleting file:", error);
-//       throw new Error("Failed to delete file from ImageKit");
-//     }
-//   };
-
+//   try {
+//     const deletedFile = await imagekit.deleteFile(fileid);
+//     return deletedFile?.url;
+//   } catch (error) {
+//     console.error("Error deleting file:", error);
+//     throw new Error("Failed to delete file from ImageKit");
+//   }
+// };
