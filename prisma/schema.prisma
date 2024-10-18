@@ -36,13 +36,21 @@ model Available {
 model Options {
   id          Int      @id @default(autoincrement())
   option_name String?  @db.VarChar(100)
+<<<<<<< HEAD
+  Models      Models[]
+=======
   models      Models[] @relation("ModelsToOptions")
+>>>>>>> b97dd3b6bd96d5311bc906f8be1275595e2adab2
 }
 
 model Specs {
   id        Int      @id @default(autoincrement())
   spec_name String?  @db.VarChar(100)
+<<<<<<< HEAD
+  Models    Models[]
+=======
   models    Models[] @relation("ModelsToSpecs")
+>>>>>>> b97dd3b6bd96d5311bc906f8be1275595e2adab2
 }
 
 model Models {
@@ -52,12 +60,23 @@ model Models {
   capacity        Int?
   type_id         Int?
   manufacture_id  Int?
+<<<<<<< HEAD
+  options_id      Int?
+  specs_id        Int?
+  cars            Cars[]
+  manufacture     Manufacture?  @relation(fields: [manufacture_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Options         Options?      @relation(fields: [options_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Specs           Specs?        @relation(fields: [specs_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transmission    Transmission? @relation(fields: [transmission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type            Type?         @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+=======
   cars            Cars[]
   manufacture     Manufacture?  @relation(fields: [manufacture_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   transmission    Transmission? @relation(fields: [transmission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   type            Type?         @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   options         Options[]     @relation("ModelsToOptions")
   specs           Specs[]       @relation("ModelsToSpecs")
+>>>>>>> b97dd3b6bd96d5311bc906f8be1275595e2adab2
 }
 
 model Cars {

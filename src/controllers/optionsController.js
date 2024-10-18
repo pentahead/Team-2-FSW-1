@@ -13,16 +13,25 @@ exports.getOptionsById = async (req, res, next) => {
 
 exports.createOptions = async (req, res, next) => {
   const data = await optionsService.createOptions(req.body);
-  successResponse(res, data);
+  successResponse(res, {
+    message: "Option successfully Added!",
+    data,
+  });
 };
 
 exports.updateOptions = async (req, res, next) => {
   const { id } = req.params;
   const data = await optionsService.updateOptions(id, req.body);
-  successResponse(res, data);
+  successResponse(res, {
+    message: "Option successfully Updated!",
+    data,
+  });
 };
 
 exports.deleteOptionsById = async (req, res, next) => {
   const data = await optionsService.deleteOptionsById(req.params.id);
-  successResponse(res, data);
+  successResponse(res, {
+    message: "Option deleted successfully",
+    data,
+  });
 };
