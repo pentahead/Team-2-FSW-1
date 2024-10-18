@@ -61,7 +61,7 @@ exports.createSpec = async (data) => {
 
 exports.updateSpec = async (id, data) => {
   // Find the existing spec data
-  const createSpec = await prisma.specs.update({
+  const updatedSpec = await prisma.specs.update({
     where: {
       id: Number(id),
     },

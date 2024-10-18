@@ -7,9 +7,9 @@ exports.getModels = async (model, capacity) => {
   // Define query here
   let query = {
     include: {
-      transmission: true,
-      type: true,
-      manufacture: true,
+      Transmission: true,
+      Type: true,
+      Manufacture: true,
     },
   };
 
@@ -33,7 +33,7 @@ exports.getModels = async (model, capacity) => {
   }
 
   // Find by query
-  const searchedModels = await prisma.models.findMany(query);
+  const searchedModels = await prisma.Models.findMany(query);
 
   // Convert BigInt fields to string for safe serialization
   const serializedModels = JSONBigInt.stringify(searchedModels);
