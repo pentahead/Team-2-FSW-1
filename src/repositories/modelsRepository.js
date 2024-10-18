@@ -3,13 +3,23 @@ const JSONBigInt = require("json-bigint");
 
 const prisma = new PrismaClient();
 
-exports.getModels = async (model, capacity) => {
+exports.getModels = async (
+  model,
+  capacity,
+  transmission_name,
+  type_name,
+  manufacture_name,
+  spec_name,
+  option_name
+) => {
   // Define query here
   let query = {
     include: {
-      Transmission: true,
-      Type: true,
-      Manufacture: true,
+      transmission: true,
+      type: true,
+      manufacture: true,
+      Specs: true,
+      Options: true,
     },
   };
 
@@ -22,7 +32,42 @@ exports.getModels = async (model, capacity) => {
   }
   if (capacity) {
     orQuery.push({
-      capacity: { contains: capacity, mode: "insensitive" },
+      capacity: parseInt(capacity, 10), // Compare capacity as a number
+    });
+  }
+  if (transmission_name) {
+    orQuery.push({
+      transmission: {
+        transmission_name: { contains: transmission_name, mode: "insensitive" },
+      },
+    });
+  }
+  if (type_name) {
+    orQuery.push({
+      type: {
+        type_name: { contains: type_name, mode: "insensitive" },
+      },
+    });
+  }
+  if (manufacture_name) {
+    orQuery.push({
+      manufacture: {
+        manufacture_name: { contains: manufacture_name, mode: "insensitive" },
+      },
+    });
+  }
+  if (spec_name) {
+    orQuery.push({
+      Specs: {
+        spec_name: { contains: spec_name, mode: "insensitive" },
+      },
+    });
+  }
+  if (option_name) {
+    orQuery.push({
+      Options: {
+        option_name: { contains: option_name, mode: "insensitive" },
+      },
     });
   }
   if (orQuery.length > 0) {
@@ -33,7 +78,7 @@ exports.getModels = async (model, capacity) => {
   }
 
   // Find by query
-  const searchedModels = await prisma.Models.findMany(query);
+  const searchedModels = await prisma.models.findMany(query);
 
   // Convert BigInt fields to string for safe serialization
   const serializedModels = JSONBigInt.stringify(searchedModels);
@@ -48,6 +93,13 @@ exports.getModelById = async (id) => {
   const model = await prisma.Models.findFirst({
     where: {
       id: modelId,
+    },
+    include: {
+      transmission: true,
+      type: true,
+      manufacture: true,
+      Specs: true,
+      Options: true,
     },
   });
 
@@ -64,6 +116,15 @@ exports.createModel = async (data) => {
       capacity: parseInt(data.capacity, 10),
       type_id: parseInt(data.type_id, 10),
       manufacture_id: parseInt(data.manufacture_id, 10),
+      options_id: parseInt(data.type_id, 10),
+      specs_id: parseInt(data.manufacture_id, 10),
+    },
+    include: {
+      transmission: true,
+      type: true,
+      manufacture: true,
+      Specs: true,
+      Options: true,
     },
   });
 
@@ -84,6 +145,15 @@ exports.updateModel = async (id, data) => {
       capacity: parseInt(data.capacity, 10),
       type_id: parseInt(data.type_id, 10),
       manufacture_id: parseInt(data.manufacture_id, 10),
+      options_id: parseInt(data.type_id, 10),
+      specs_id: parseInt(data.manufacture_id, 10),
+    },
+    include: {
+      transmission: true,
+      type: true,
+      manufacture: true,
+      Specs: true,
+      Options: true,
     },
   });
 
@@ -94,6 +164,13 @@ exports.updateModel = async (id, data) => {
 exports.deleteModelById = async (id) => {
   const deletedModel = await prisma.models.delete({
     where: { id: Number(id) },
+    include: {
+      transmission: true,
+      type: true,
+      manufacture: true,
+      Specs: true,
+      Options: true,
+    },
   });
   return deletedModel;
 };

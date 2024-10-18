@@ -2,8 +2,24 @@ const modelRepository = require("../repositories/modelsRepository");
 const { imageUpload } = require("../utils/image-kit");
 const { NotFoundError, InternalServerError } = require("../utils/request");
 
-exports.getModels = async (model, capacity) => {
-  return modelRepository.getModels(model, capacity);
+exports.getModels = async (
+  model,
+  capacity,
+  transmission_name,
+  type_name,
+  manufacture_name,
+  spec_name,
+  option_name
+) => {
+  return modelRepository.getModels(
+    model,
+    capacity,
+    transmission_name,
+    type_name,
+    manufacture_name,
+    spec_name,
+    option_name
+  );
 };
 
 exports.getModelById = async (id) => {

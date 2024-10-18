@@ -6,6 +6,11 @@ exports.validateGetModels = (req, res, next) => {
   const validateQuery = z.object({
     model_name: z.string().optional().nullable(),
     capacity: z.string().optional().nullable(),
+    transmission_name: z.string().optional().nullable(),
+    type_name: z.string().optional().nullable(),
+    manufacture_name: z.string().optional().nullable(),
+    spec_name: z.string().optional().nullable(),
+    option_name: z.string().optional().nullable(),
   });
 
   const resultValidateQuery = validateQuery.safeParse(req.query);
@@ -40,6 +45,8 @@ exports.validateCreateModel = (req, res, next) => {
     capacity: z.string(),
     type_id: z.string(),
     manufacture_id: z.string(),
+    options_id: z.string(),
+    specs_id: z.string(),
   });
 
   // Validate
@@ -71,6 +78,8 @@ exports.validateUpdateModel = (req, res, next) => {
     capacity: z.string(),
     type_id: z.string(),
     manufacture_id: z.string(),
+    options_id: z.string(),
+    specs_id: z.string(),
   });
 
   // Validate
