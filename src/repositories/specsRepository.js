@@ -4,12 +4,10 @@ const JSONBigInt = require("json-bigint");
 const prisma = new PrismaClient();
 
 exports.getSpecs = async (spec_name) => {
-  // Define query here
   let query = {
     where: {},
   };
 
-  // It will generate the query
   let orQuery = [];
   if (spec_name) {
     orQuery.push({
@@ -23,26 +21,21 @@ exports.getSpecs = async (spec_name) => {
     };
   }
 
-  // Find by query
   const searchedSpecs = await prisma.Specs.findMany(query);
 
-  // Convert BigInt fields to string for safe serialization
   const serializedSpecs = JSONBigInt.stringify(searchedSpecs);
   return JSONBigInt.parse(serializedSpecs);
 };
 
 exports.getSpecById = async (id) => {
-  // Convert the string ID to an integer
   const specId = parseInt(id, 10);
 
-  // Find spec by ID
   const spec = await prisma.Specs.findFirst({
     where: {
       id: specId,
     },
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedSpecs = JSONBigInt.stringify(spec);
   return JSONBigInt.parse(serializedSpecs);
 };
@@ -54,13 +47,11 @@ exports.createSpec = async (data) => {
     },
   });
 
-  // Convert BigInt fields to string for safe serialization
   const serializedSpecs = JSONBigInt.stringify(newSpec);
   return JSONBigInt.parse(serializedSpecs);
 };
 
 exports.updateSpec = async (id, data) => {
-  // Find the existing spec data
   const updatedSpec = await prisma.specs.update({
     where: {
       id: Number(id),
