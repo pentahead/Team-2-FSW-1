@@ -87,13 +87,13 @@ exports.deleteCarById = async (id) => {
   if (!deletedCar) {
     throw new InternalServerError(["Failed to Delete Car!"]);
   }
-  
+
   //bang tolong benerin nih yang bisa:
   //Error deleting file: { error: 'Invalid CSRF Token' }
   //Error: Failed to delete file from ImageKit
 
   // if (existingCar?.image) {
-  //    await imageDelete(existingCar.image);
+  //   await imageDelete(existingCar.image);
   // }
   return deletedCar;
 };
