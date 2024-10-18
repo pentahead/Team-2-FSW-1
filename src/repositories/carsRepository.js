@@ -14,7 +14,9 @@ exports.getCars = async (
   transmission_name,
   type_name,
   available_status,
-  available_At
+  available_At,
+  spec_name,
+  option_name
 ) => {
   let query = {
     include: {
@@ -23,6 +25,8 @@ exports.getCars = async (
           transmission: true,
           manufacture: true,
           type: true,
+          Specs: true,
+          Options: true,
         },
       },
       availability: true,
@@ -112,6 +116,24 @@ exports.getCars = async (
       available_At: { contains: available_At, mode: "insensitive" },
     });
   }
+  if (option_name) {
+    andQuery.push({
+      model: {
+        Options: {
+          option_name: { contains: option_name, mode: "insensitive" },
+        },
+      },
+    });
+  }
+  if (spec_name) {
+    andQuery.push({
+      model: {
+        Specs: {
+          spec_name: { contains: spec_name, mode: "insensitive" },
+        },
+      },
+    });
+  }
 
   if (andQuery.length > 0) {
     query.where = {
@@ -134,6 +156,8 @@ exports.getCarById = async (id) => {
           transmission: true,
           manufacture: true,
           type: true,
+          Specs: true,
+          Options: true,
         },
       },
       availability: true,
@@ -152,6 +176,8 @@ exports.createCar = async (data) => {
           transmission: true,
           manufacture: true,
           type: true,
+          Specs: true,
+          Options: true,
         },
       },
       availability: true,
@@ -173,6 +199,8 @@ exports.updateCarById = async (id, data) => {
           transmission: true,
           manufacture: true,
           type: true,
+          Specs: true,
+          Options: true,
         },
       },
       availability: true,
@@ -209,6 +237,8 @@ exports.deleteCarById = async (id) => {
           transmission: true,
           manufacture: true,
           type: true,
+          Specs: true,
+          Options: true,
         },
       },
       availability: true,

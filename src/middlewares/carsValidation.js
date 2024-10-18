@@ -14,6 +14,8 @@ exports.validateGetCars = (req, res, next) => {
     type_name: z.string().optional(),
     available_status: z.string().optional(),
     availableAt: z.string().optional(),
+    option_name: z.string().optional(),
+    spec_name: z.string().optional(),
   });
 
   const resultValidateQuery = validateQuery.safeParse(req.query);

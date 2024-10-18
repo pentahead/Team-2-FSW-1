@@ -17,7 +17,9 @@ exports.getCars = async (
   transmission_name,
   type_name,
   available_status,
-  available_At
+  available_At,
+  option_name,
+  spec_name
 ) => {
   const cars = await carsRepository.getCars(
     model_name,
@@ -30,7 +32,9 @@ exports.getCars = async (
     transmission_name,
     type_name,
     available_status,
-    available_At
+    available_At,
+    option_name,
+    spec_name
   );
   if (!cars.length) {
     throw new NotFoundError("No cars found with the provided criteria.");
