@@ -12,72 +12,50 @@ exports.getAvailable = async (available_status) => {
   }
 
   const searchedAvailable = await prisma.available.findMany(query);
-
   const serializedAvailable = JSONBigInt.stringify(searchedAvailable);
+
   return JSONBigInt.parse(serializedAvailable);
 };
 
 exports.createAvailable = async (data) => {
-  try {
-    const newAvailable = await prisma.available.create({
-      data,
-    });
+  const newAvailable = await prisma.available.create({
+    data,
+  });
 
-    const serializedAvailable = JSONBigInt.stringify(newAvailable);
-    return JSONBigInt.parse(serializedAvailable);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error creating available status");
-  }
+  const serializedAvailable = JSONBigInt.stringify(newAvailable);
+  return JSONBigInt.parse(serializedAvailable);
 };
 
 exports.getAvailableById = async (id) => {
-  try {
-    const available = await prisma.available.findUnique({
-      where: {
-        id: parseInt(id, 10),
-      },
-    });
+  const available = await prisma.available.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    if (!available) {
-      throw new Error(`Available status with id ${id} not found`);
-    }
-
-    const serializedAvailable = JSONBigInt.stringify(available);
-    return JSONBigInt.parse(serializedAvailable);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error retrieving available data");
-  }
+  const serializedAvailable = JSONBigInt.stringify(available);
+  return JSONBigInt.parse(serializedAvailable);
 };
 
 exports.updateAvailable = async (id, data) => {
-  try {
-    const updatedAvailable = await prisma.available.update({
-      where: { id: parseInt(id, 10) },
-      data: {
-        ...data,
-      },
-    });
+  const updatedAvailable = await prisma.available.update({
+    where: {
+      id: Number(id),
+    },
+    data,
+  });
 
-    const serializedAvailable = JSONBigInt.stringify(updatedAvailable);
-    return JSONBigInt.parse(serializedAvailable);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error updating available data");
-  }
+  const serializedAvailable = JSONBigInt.stringify(updatedAvailable);
+  return JSONBigInt.parse(serializedAvailable);
 };
 
 exports.deleteAvailableById = async (id) => {
-  try {
-    const deletedAvailable = await prisma.available.delete({
-      where: { id: parseInt(id, 10) },
-    });
+  const deletedAvailable = await prisma.available.delete({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    const serializedAvailable = JSONBigInt.stringify(deletedAvailable);
-    return JSONBigInt.parse(serializedAvailable);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error deleting available data");
-  }
+  const serializedAvailable = JSONBigInt.stringify(deletedAvailable);
+  return JSONBigInt.parse(serializedAvailable);
 };

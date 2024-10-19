@@ -24,69 +24,44 @@ exports.getTransmissions = async (transmission_name) => {
 };
 
 exports.createTransmission = async (data) => {
-  try {
-    const newTransmission = await prisma.transmission.create({
-      data,
-    });
+  const newTransmission = await prisma.transmission.create({
+    data,
+  });
 
-    const serializedTransmission = JSONBigInt.stringify(newTransmission);
-    return JSONBigInt.parse(serializedTransmission);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error creating transmission");
-  }
+  const serializedTransmission = JSONBigInt.stringify(newTransmission);
+  return JSONBigInt.parse(serializedTransmission);
 };
 
 exports.getTransmissionById = async (id) => {
-  try {
-    const transmission = await prisma.transmission.findUnique({
-      where: {
-        id: parseInt(id, 10),
-      },
-      include: {},
-    });
+  const transmission = await prisma.transmission.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    if (!transmission) {
-      throw new Error(`Transmission with id ${id} not found`);
-    }
-
-    const serializedTransmission = JSONBigInt.stringify(transmission);
-    return JSONBigInt.parse(serializedTransmission);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error retrieving transmission data");
-  }
+  const serializedTransmission = JSONBigInt.stringify(transmission);
+  return JSONBigInt.parse(serializedTransmission);
 };
 
 exports.updateTransmission = async (id, data) => {
-  try {
-    const updatedTransmission = await prisma.transmission.update({
-      where: {
-        id: parseInt(id, 10),
-      },
-      data: {
-        ...data,
-      },
-    });
+  const updatedTransmission = await prisma.transmission.update({
+    where: {
+      id: Number(id),
+    },
+    data,
+  });
 
-    const serializedTransmission = JSONBigInt.stringify(updatedTransmission);
-    return JSONBigInt.parse(serializedTransmission);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error updating transmission data");
-  }
+  const serializedTransmission = JSONBigInt.stringify(updatedTransmission);
+  return JSONBigInt.parse(serializedTransmission);
 };
 
 exports.deleteTransmissionById = async (id) => {
-  try {
-    const deletedTransmission = await prisma.transmission.delete({
-      where: { id: parseInt(id, 10) },
-    });
+  const deletedTransmission = await prisma.transmission.delete({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    const serializedTransmission = JSONBigInt.stringify(deletedTransmission);
-    return JSONBigInt.parse(serializedTransmission);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error deleting transmission data");
-  }
+  const serializedTransmission = JSONBigInt.stringify(deletedTransmission);
+  return JSONBigInt.parse(serializedTransmission);
 };

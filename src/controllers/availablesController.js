@@ -7,42 +7,33 @@ exports.getAvailable = async (req, res, next) => {
 };
 
 exports.getAvailableById = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const data = await availableService.getAvailableById(id);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await availableService.getAvailableById(req.params.id);
+  successResponse(res, data);
 };
 
 exports.createAvailable = async (req, res, next) => {
   const data = await availableService.createAvailable(req.body);
-  successResponse(res, data);
+  successResponse(res, {
+    message: "Available Created Successfully!",
+    data,
+  });
 };
 
 exports.updateAvailable = async (req, res, next) => {
-  try {
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid ID provided." });
-    }
-    const data = await availableService.updateAvailable(id, req.body);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const id = req.params.id;
+
+  const data = await availableService.updateAvailable(id, req.body);
+  successResponse(res, {
+    message: "Available Updated Successfully!",
+    data,
+  });
 };
 
 exports.deleteAvailableById = async (req, res, next) => {
-  try {
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid ID provided." });
-    }
-    const data = await availableService.deleteAvailableById(id);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await availableService.deleteAvailableById(req.params. id);
+
+  successResponse(res, {
+    message: "Available Deleted successfully!",
+    data,
+  });
 };

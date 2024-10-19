@@ -2,53 +2,38 @@ const { successResponse } = require("../utils/response");
 const typeService = require("../services/typesService");
 
 exports.getTypes = async (req, res, next) => {
-  try {
-    const data = await typeService.getTypes(req.query?.type_name);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await typeService.getTypes(req.query?.type_name);
+  successResponse(res, data);
 };
-
-
 
 exports.getTypeById = async (req, res, next) => {
   const { id } = req.params;
-  try {
-    const data = await typeService.getTypeById(id);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await typeService.getTypeById(id);
+  successResponse(res, data);
 };
 
-
 exports.createType = async (req, res, next) => {
-  try {
-    const data = await typeService.createType(req.body);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await typeService.createType(req.body);
+  successResponse(res, {
+    message: "Type Created successfully !",
+    data,
+  });
 };
 
 exports.updateType = async (req, res, next) => {
-  const id = parseInt(req.params.id, 10);
+  const id = req.params.id;
 
-  try {
-    const data = await typeService.updateType(id, req.body);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await typeService.updateType(id, req.body);
+  successResponse(res, {
+    message: "Type Updated successfully !",
+    data,
+  });
 };
 
 exports.deleteTypeById = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const data = await typeService.deleteTypeById(id);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await typeService.deleteTypeById(req.params.id);
+  successResponse(res, {
+    message: "Type deleted successfully !",
+    data,
+  });
 };

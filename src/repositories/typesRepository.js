@@ -26,66 +26,44 @@ exports.getTypes = async (type_name) => {
 };
 
 exports.createType = async (data) => {
-  try {
-    const newType = await prisma.type.create({
-      data,
-    });
+  const newType = await prisma.type.create({
+    data,
+  });
 
-    const serializedType = JSONBigInt.stringify(newType);
-    return JSONBigInt.parse(serializedType);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error creating type");
-  }
+  const serializedType = JSONBigInt.stringify(newType);
+  return JSONBigInt.parse(serializedType);
 };
 
 exports.getTypeById = async (id) => {
-  try {
-    const type = await prisma.type.findUnique({
-      where: {
-        id: parseInt(id, 10),
-      },
-    });
+  const type = await prisma.type.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    if (!type) {
-      throw new Error(`Type with id ${id} not found`);
-    }
-
-    const serializedType = JSONBigInt.stringify(type);
-    return JSONBigInt.parse(serializedType);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error retrieving type data");
-  }
+  const serializedType = JSONBigInt.stringify(type);
+  return JSONBigInt.parse(serializedType);
 };
 
 exports.updateType = async (id, data) => {
-  try {
-    const updatedType = await prisma.type.update({
-      where: { id: parseInt(id, 10) },
-      data: {
-        ...data,
-      },
-    });
+  const updatedType = await prisma.type.update({
+    where: {
+      id: Number(id),
+    },
+    data,
+  });
 
-    const serializedType = JSONBigInt.stringify(updatedType);
-    return JSONBigInt.parse(serializedType);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error updating type data");
-  }
+  const serializedType = JSONBigInt.stringify(updatedType);
+  return JSONBigInt.parse(serializedType);
 };
 
 exports.deleteTypeById = async (id) => {
-  try {
-    const deletedType = await prisma.type.delete({
-      where: { id: parseInt(id, 10) },
-    });
+  const deletedType = await prisma.type.delete({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    const serializedType = JSONBigInt.stringify(deletedType);
-    return JSONBigInt.parse(serializedType);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error deleting type data");
-  }
+  const serializedType = JSONBigInt.stringify(deletedType);
+  return JSONBigInt.parse(serializedType);
 };

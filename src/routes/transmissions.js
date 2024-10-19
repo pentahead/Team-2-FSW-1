@@ -5,22 +5,26 @@ const {
   validateDeleteTransmissionById,
   validateCreateTransmission,
   validateUpdateTransmission,
-} = require("../middlewares/transmissionsValidation"); 
+} = require("../middlewares/transmissionsValidation");
 const {
   getTransmissions,
   getTransmissionById,
   deleteTransmissionById,
   createTransmission,
   updateTransmission,
-} = require("../controllers/transmissionsController"); 
+} = require("../controllers/transmissionsController");
 
 const router = express.Router();
 
-router.get("/", getTransmissions);
-// router.get("/search", validateGetTransmissions, getTransmissions);
-router.post("/", validateCreateTransmission, createTransmission);
-router.get("/:id", validateGetTransmissionById, getTransmissionById);
-router.put("/:id", validateUpdateTransmission, updateTransmission);
-router.delete("/:id", validateDeleteTransmissionById, deleteTransmissionById);
+router
+  .route("/")
+  .get(getTransmissions)
+  .post(validateCreateTransmission, createTransmission);
+
+router
+  .route("/:id")
+  .get(validateGetTransmissionById, getTransmissionById)
+  .put(validateUpdateTransmission, updateTransmission)
+  .delete(validateDeleteTransmissionById, deleteTransmissionById);
 
 module.exports = router;

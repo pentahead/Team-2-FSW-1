@@ -5,21 +5,26 @@ const {
   validateDeleteAvailableById,
   validateCreateAvailable,
   validateUpdateAvailable,
-} = require("../middlewares/availablesValidation"); 
+} = require("../middlewares/availablesValidation");
 const {
   getAvailable,
   getAvailableById,
   deleteAvailableById,
   createAvailable,
   updateAvailable,
-} = require("../controllers/availablesController"); 
+} = require("../controllers/availablesController");
 
 const router = express.Router();
 
-router.get("/", getAvailable);
-router.post("/", validateCreateAvailable, createAvailable);
-router.get("/:id", validateGetAvailableById, getAvailableById);
-router.put("/:id", validateUpdateAvailable, updateAvailable);
-router.delete("/:id", validateDeleteAvailableById, deleteAvailableById);
+router
+  .route("/")
+  .get(getAvailable)
+  .post(validateCreateAvailable, createAvailable);
+
+router
+  .route("/:id")
+  .get(validateGetAvailableById, getAvailableById)
+  .put(validateUpdateAvailable, updateAvailable)
+  .delete(validateDeleteAvailableById, deleteAvailableById);
 
 module.exports = router;

@@ -1,8 +1,16 @@
 const availableRepository = require("../repositories/availablesRepository"); // Ganti path sesuai dengan struktur proyek
-const { NotFoundError, InternalServerError } = require("../utils/request");
+const {
+  NotFoundError,
+  InternalServerError,
+  BadRequestError,
+} = require("../utils/request");
 
-exports.getAvailable = (available_status) => {
-  return availableRepository.getAvailable(available_status);
+exports.getAvailable = async (available_status) => {
+  const availables = await availableRepository.getAvailable(available_status);
+  if (!availables.length) {
+    throw new NotFoundError("No availables found with the provided criteria.");
+  }
+  return availables;
 };
 
 exports.getAvailableById = async (id) => {
@@ -38,6 +46,7 @@ exports.updateAvailable = async (id, data) => {
 
 exports.deleteAvailableById = async (id) => {
   const existingAvailable = await availableRepository.getAvailableById(id);
+
   if (!existingAvailable) {
     throw new NotFoundError("Available status is Not Found!");
   }

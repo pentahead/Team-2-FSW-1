@@ -3,8 +3,14 @@ const { imageUpload } = require("../utils/image-kit");
 
 const { NotFoundError, InternalServerError } = require("../utils/request");
 
-exports.getTransmissions = (transmission_name) => {
-  return transmissionRepository.getTransmissions(transmission_name);
+exports.getTransmissions = async (transmission_name) => {
+  const transmissions = await transmissionRepository.getTransmissions(
+    transmission_name
+  );
+  if (!transmissions.length) {
+    throw new NotFoundError("No trasnmissions found with the provided criteria.");
+  }
+  return transmissions;
 };
 exports.getTransmissionById = async (id) => {
   const transmission = await transmissionRepository.getTransmissionById(id);

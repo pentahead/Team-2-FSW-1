@@ -16,11 +16,17 @@ const {
 
 const router = express.Router();
 
-router.get("/", getManufactures);
+router
+  .route("/")
+  .get(getManufactures)
+  .post(validateCreateManufacture, createManufacture);
+
+router
+  .route("/:id")
+  .get(validateGetManufactureById, getManufactureById)
+  .put(validateUpdateManufacture, updateManufacture)
+  .delete(validateDeleteManufactureById, deleteManufactureById);
+
 // router.get("/search", validateGetManufactures, getManufactures);
-router.post("/", validateCreateManufacture, createManufacture);
-router.get("/:id", validateGetManufactureById, getManufactureById);
-router.put("/:id", validateUpdateManufacture, updateManufacture);
-router.delete("/:id", validateDeleteManufactureById, deleteManufactureById);
 
 module.exports = router;

@@ -34,95 +34,47 @@ exports.getManufactures = async (
   }
 
   const searchedManufactures = await prisma.manufacture.findMany(query);
-
   const serializedManufactures = JSONBigInt.stringify(searchedManufactures);
   return JSONBigInt.parse(serializedManufactures);
 };
 
+exports.getManufactureById = async (id) => {
+  const manufacture = await prisma.manufacture.findUnique({
+    where: { id: Number(id) },
+  });
+
+  const serializedManufacture = JSONBigInt.stringify(manufacture);
+  return JSONBigInt.parse(serializedManufacture);
+};
+
 exports.createManufacture = async (data) => {
-  try {
-    const newManufacture = await prisma.manufacture.create({
-      data,
-    });
+  const newManufacture = await prisma.manufacture.create({
+    data,
+  });
 
-    const serializedManufactures = JSONBigInt.stringify(newManufacture);
-    return JSONBigInt.parse(serializedManufactures);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error creating manufacture");
-  }
-};
-
-exports.getManufactureById = async (id) => {
-  try {
-    const manufacture = await prisma.manufacture.findUnique({
-      where: {
-        id: parseInt(id, 10),
-      },
-      include: {},
-    });
-
-    if (!manufacture) {
-      throw new Error(`Manufacture with id ${id} not found`);
-    }
-
-    const serializedManufacture = JSONBigInt.stringify(manufacture);
-    return JSONBigInt.parse(serializedManufacture);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error retrieving manufacture data");
-  }
-};
-
-exports.getManufactureById = async (id) => {
-  try {
-    const manufacture = await prisma.manufacture.findUnique({
-      where: {
-        id: parseInt(id, 10),
-      },
-      include: {},
-    });
-
-    if (!manufacture) {
-      throw new Error(`Manufacture with id ${id} not found`);
-    }
-
-    const serializedManufacture = JSONBigInt.stringify(manufacture);
-    return JSONBigInt.parse(serializedManufacture);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error retrieving manufacture data");
-  }
+  const serializedManufactures = JSONBigInt.stringify(newManufacture);
+  return JSONBigInt.parse(serializedManufactures);
 };
 
 exports.updateManufacture = async (id, data) => {
-  try {
-    const updatedManufacture = await prisma.manufacture.update({
-      where: { id: parseInt(id, 10) },
+  const updatedManufacture = await prisma.manufacture.update({
+    where: {
+      id: Number(id),
+    },
+    data,
+  });
 
-      data: {
-        ...data,
-      },
-    });
-
-    const serializedManufactures = JSONBigInt.stringify(updatedManufacture);
-    return JSONBigInt.parse(serializedManufactures);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error updating manufacture data");
-  }
+  const serializedManufactures = JSONBigInt.stringify(updatedManufacture);
+  return JSONBigInt.parse(serializedManufactures);
 };
 
 exports.deleteManufactureById = async (id) => {
-  try {
-    const deletedManufacture = await prisma.manufacture.delete({
-      where: { id: parseInt(id, 10) },
-    });
+  const deletedManufacture = await prisma.manufacture.delete({
+    where: {
+      id: Number(id),
+    },
+  });
 
-    const serializedManufacture = JSONBigInt.stringify(deletedManufacture);
-    return JSONBigInt.parse(serializedManufacture);
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error deleting manufacture data");
-  }
+  const serializedManufacture = JSONBigInt.stringify(deletedManufacture);
+  return JSONBigInt.parse(serializedManufacture);
 };

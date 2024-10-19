@@ -12,36 +12,33 @@ exports.getManufactures = async (req, res, next) => {
 };
 
 exports.getManufactureById = async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const data = await manufactureService.getManufactureById(id);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const data = await manufactureService.getManufactureById(req.params.id);
+  successResponse(res, data);
 };
 
 exports.createManufacture = async (req, res, next) => {
   const data = await manufactureService.createManufacture(req.body, req.files);
-  successResponse(res, data);
+  successResponse(res, {
+    message: "Manufacture Created successfully!",
+    data,
+  });
 };
 
 exports.updateManufacture = async (req, res, next) => {
-  try {
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid ID provided." });
-    }
-    const data = await manufactureService.updateManufacture(id, req.body);
-    successResponse(res, data);
-  } catch (error) {
-    next(error);
-  }
+  const id = req.params.id;
+
+  const data = await manufactureService.updateManufacture(id, req.body);
+  successResponse(res, {
+    message: "Manufacture Updated successfully!",
+    data,
+  });
 };
 
-exports.deleteManufactureById = (req, res, next) => {
-  const { id } = req.params;
-  const data = manufactureService.deleteManufactureById(id);
-  successResponse(res, data);
+exports.deleteManufactureById = async (req, res, next) => {
+  const data = await manufactureService.deleteManufactureById(req.params.id);
+
+  successResponse(res, {
+    message: "Manufacture Deleted successfully!",
+    data,
+  });
 };
