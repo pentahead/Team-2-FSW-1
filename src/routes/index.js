@@ -7,6 +7,8 @@ const manufactureRouter = require("./manufacture");
 const transmissionsRouter = require("./transmissions");
 const typesRouter = require("./types");
 const availablesRouter = require("./availables");
+const modeloptions = require("./modelOptions");
+const modelspecs = require("./modelOptions");
 
 const router = express.Router();
 
@@ -18,4 +20,6 @@ router.use("/manufactures", manufactureRouter);
 router.use("/transmissions", transmissionsRouter);
 router.use("/types", typesRouter);
 router.use("/availables", availablesRouter);
+router.use("/modeloptions", modeloptions);
+router.use("/modelspecs", modelspecs);
 module.exports = router;

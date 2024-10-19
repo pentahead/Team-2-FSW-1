@@ -1,16 +1,8 @@
 const { z } = require("zod");
 const { BadRequestError } = require("../utils/request");
 
-exports.validateGetModels = (req, res, next) => {
-  const validateQuery = z.object({
-    model_name: z.string().optional().nullable(),
-    capacity: z.string().optional().nullable(),
-    transmission_name: z.string().optional().nullable(),
-    type_name: z.string().optional().nullable(),
-    manufacture_name: z.string().optional().nullable(),
-    spec_name: z.string().optional().nullable(),
-    option_name: z.string().optional().nullable(),
-  });
+exports.validateGetModelOptions = (req, res, next) => {
+  const validateQuery = z.object({});
 
   const resultValidateQuery = validateQuery.safeParse(req.query);
   if (!resultValidateQuery.success) {
@@ -19,7 +11,7 @@ exports.validateGetModels = (req, res, next) => {
   next();
 };
 
-exports.validateGetModelById = (req, res, next) => {
+exports.validateGetModelOptionsById = (req, res, next) => {
   const validateParams = z.object({
     id: z.string(),
   });
@@ -30,16 +22,8 @@ exports.validateGetModelById = (req, res, next) => {
   next();
 };
 
-exports.validateCreateModel = (req, res, next) => {
-  const validateBody = z.object({
-    model_name: z.string(),
-    transmission_id: z.string(),
-    capacity: z.string(),
-    type_id: z.string(),
-    manufacture_id: z.string(),
-    option_id: z.array(z.string()),
-    spec_id: z.array(z.string()),
-  });
+exports.validateDeleteModelOptionsById = (req, res, next) => {
+  const validateBody = z.object({});
 
   const result = validateBody.safeParse(req.body);
   if (!result.success) {
@@ -48,7 +32,7 @@ exports.validateCreateModel = (req, res, next) => {
   next();
 };
 
-exports.validateUpdateModel = (req, res, next) => {
+exports.validateCreateModelOptions = (req, res, next) => {
   const validateParams = z.object({
     id: z.string(),
   });
@@ -58,15 +42,7 @@ exports.validateUpdateModel = (req, res, next) => {
     throw new BadRequestError(resultValidateParams.error.errors);
   }
 
-  const validateBody = z.object({
-    model_name: z.string(),
-    transmission_id: z.string(),
-    capacity: z.string(),
-    type_id: z.string(),
-    manufacture_id: z.string(),
-    option_id: z.array(z.string()),
-    spec_id: z.array(z.string()),
-  });
+  const validateBody = z.object({});
 
   const resultValidateBody = validateBody.safeParse(req.body);
   if (!resultValidateBody.success) {
@@ -76,7 +52,7 @@ exports.validateUpdateModel = (req, res, next) => {
   next();
 };
 
-exports.validateDeleteModelById = (req, res, next) => {
+exports.validateUpdateModelOptions = (req, res, next) => {
   const validateParams = z.object({
     id: z.string(),
   });

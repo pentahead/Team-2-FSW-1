@@ -21,7 +21,7 @@ exports.getModelById = async (req, res, next) => {
 };
 
 exports.createModel = async (req, res, next) => {
-  const data = await modelService.createModel(req.body, req.files);
+  const data = await modelService.createModel(req.body);
   successResponse(res, {
     message: "Model created successfully",
     data,
