@@ -31,11 +31,11 @@ exports.getModelById = async (id) => {
   return model;
 };
 
-exports.createModel = async (data, file) => {
+exports.createModel = async (data) => {
   return modelRepository.createModel(data);
 };
 
-exports.updateModel = async (id, data, file) => {
+exports.updateModel = async (id, data) => {
   const existingModel = modelRepository.getModelById(id);
   if (!existingModel) {
     throw new NotFoundError("Model is Not Found!");

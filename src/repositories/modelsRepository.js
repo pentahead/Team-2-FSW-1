@@ -15,10 +15,10 @@ exports.getModels = async (
   let query = {
     include: {
       transmission: true,
-      type: true,
       manufacture: true,
-      Specs: true,
-      Options: true,
+      type: true,
+      specs: { include: { spec: true } },
+      options: { include: { option: true } },
     },
   };
 
@@ -87,10 +87,10 @@ exports.getModelById = async (id) => {
     },
     include: {
       transmission: true,
-      type: true,
       manufacture: true,
-      Specs: true,
-      Options: true,
+      type: true,
+      specs: { include: { spec: true } },
+      options: { include: { option: true } },
     },
   });
 
@@ -99,32 +99,65 @@ exports.getModelById = async (id) => {
 };
 
 exports.createModel = async (data) => {
-  const newModel = await prisma.Models.create({
+  const newModel = await prisma.models.create({
     data: {
       model_name: data.model_name,
       transmission_id: parseInt(data.transmission_id, 10),
       capacity: parseInt(data.capacity, 10),
       type_id: parseInt(data.type_id, 10),
       manufacture_id: parseInt(data.manufacture_id, 10),
-      options_id: parseInt(data.type_id, 10),
-      specs_id: parseInt(data.manufacture_id, 10),
     },
     include: {
       transmission: true,
-      type: true,
       manufacture: true,
-      Specs: true,
-      Options: true,
+      type: true,
+      specs: { include: { spec: true } },
+      options: { include: { option: true } },
     },
   });
-  const serializedModels = JSONBigInt.stringify(newModel);
-  return JSONBigInt.parse(serializedModels);
+
+  const createNewOptions = await Promise.all(
+    (Array.isArray(data.option_id)
+      ? data.option_id
+      : data.option_id.split(",").map((id) => id.trim())
+    ).map(async (optionId) => {
+      return prisma.modelOptions.create({
+        data: {
+          model_id: newModel.id,
+          option_id: BigInt(optionId),
+        },
+      });
+    })
+  );
+
+  const createNewSpecs = await Promise.all(
+    (Array.isArray(data.spec_id)
+      ? data.spec_id
+      : data.spec_id.split(",").map((id) => id.trim())
+    ).map(async (specId) => {
+      return prisma.modelSpecs.create({
+        data: {
+          model_id: newModel.id,
+          spec_id: BigInt(specId),
+        },
+      });
+    })
+  );
+
+  const Models = {
+    ...newModel,
+    options: createNewOptions,
+    specs: createNewSpecs,
+  };
+
+  const serializedNewModels = JSONBigInt.stringify(Models);
+  return JSONBigInt.parse(serializedNewModels);
 };
 
 exports.updateModel = async (id, data) => {
   const updatedModel = await prisma.models.update({
     where: {
-      id: Number(id),
+      id: parseInt(id, 10), 
     },
     data: {
       model_name: data.model_name,
@@ -132,32 +165,90 @@ exports.updateModel = async (id, data) => {
       capacity: parseInt(data.capacity, 10),
       type_id: parseInt(data.type_id, 10),
       manufacture_id: parseInt(data.manufacture_id, 10),
-      options_id: parseInt(data.type_id, 10),
-      specs_id: parseInt(data.manufacture_id, 10),
     },
     include: {
       transmission: true,
-      type: true,
       manufacture: true,
-      Specs: true,
-      Options: true,
+      type: true,
+      specs: { include: { spec: true } },
+      options: { include: { option: true } },
     },
   });
 
-  const serializedModels = JSONBigInt.stringify(updatedModel);
-  return JSONBigInt.parse(serializedModels);
+  const updateOptions = await Promise.all(
+    (Array.isArray(data.option_id)
+      ? data.option_id
+      : data.option_id.split(",").map((id) => id.trim())
+    ) 
+      .map(async (optionId) => {
+        return prisma.modelOptions.upsert({
+          where: {
+            model_id_option_id: {
+              model_id: updatedModel.id,
+              option_id: BigInt(optionId), 
+            },
+          },
+          update: {},
+          create: {
+            model_id: updatedModel.id,
+            option_id: BigInt(optionId),
+          },
+        });
+      })
+  );
+
+
+  const updateSpecs = await Promise.all(
+    (Array.isArray(data.spec_id)
+      ? data.spec_id
+      : data.spec_id.split(",").map((id) => id.trim())
+    ) 
+      .map(async (specId) => {
+        return prisma.modelSpecs.upsert({
+          where: {
+            model_id_spec_id: {
+              model_id: updatedModel.id,
+              spec_id: BigInt(specId),
+            },
+          },
+          update: {},
+          create: {
+            model_id: updatedModel.id,
+            spec_id: BigInt(specId),
+          },
+        });
+      })
+  );
+
+  const Models = {
+    ...updatedModel,
+    options: updateOptions,
+    specs: updateSpecs,
+  };
+
+  const serializedUpdatedModel = JSONBigInt.stringify(Models);
+  return JSONBigInt.parse(serializedUpdatedModel);
 };
 
-exports.deleteModelById = async (id) => {
-  const deletedModel = await prisma.models.delete({
-    where: { id: Number(id) },
-    include: {
-      transmission: true,
-      type: true,
-      manufacture: true,
-      Specs: true,
-      Options: true,
+exports.deleteModelById = async (modelId) => {
+  await prisma.modelOptions.deleteMany({
+    where: {
+      model_id: parseInt(modelId, 10), 
     },
   });
-  return deletedModel;
+
+  await prisma.modelSpecs.deleteMany({
+    where: {
+      model_id: parseInt(modelId, 10), 
+    },
+  });
+
+  
+  const deletedModel = await prisma.models.delete({
+    where: {
+      id: parseInt(modelId, 10), 
+    },
+  });
+
+  return deletedModel; 
 };

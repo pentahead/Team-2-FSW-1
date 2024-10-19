@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Manufacture {
-  id                 Int      @id @default(autoincrement())
+  id                 BigInt   @id @default(autoincrement())
   manufacture_name   String?  @db.VarChar(100)
   manufacture_region String?  @db.VarChar(100)
   year_establish     Int?
@@ -16,62 +16,78 @@ model Manufacture {
 }
 
 model Transmission {
-  id                Int      @id @default(autoincrement())
+  id                BigInt   @id @default(autoincrement())
   transmission_name String?  @db.VarChar(100)
   models            Models[]
 }
 
 model Type {
-  id        Int      @id @default(autoincrement())
+  id        BigInt   @id @default(autoincrement())
   type_name String?  @db.VarChar(100)
   models    Models[]
 }
 
 model Available {
-  id               Int     @id @default(autoincrement())
+  id               BigInt  @id @default(autoincrement())
   available_status String? @db.VarChar(100)
   cars             Cars[]
 }
 
 model Options {
-  id          Int      @id @default(autoincrement())
-  option_name String?  @db.VarChar(100)
-  Models      Models[]
+  id          BigInt         @id @default(autoincrement())
+  option_name String?        @db.VarChar(100)
+  models      modelOptions[]
 }
 
 model Specs {
-  id        Int      @id @default(autoincrement())
-  spec_name String?  @db.VarChar(100)
-  Models    Models[]
+  id        BigInt       @id @default(autoincrement())
+  spec_name String?      @db.VarChar(100)
+  models    modelSpecs[]
 }
 
 model Models {
-  id              Int           @id @default(autoincrement())
-  model_name      String?       @db.VarChar(100)
-  transmission_id Int?
+  id              BigInt         @id @default(autoincrement())
+  model_name      String?        @db.VarChar(100)
+  transmission_id BigInt?
   capacity        Int?
-  type_id         Int?
-  manufacture_id  Int?
-  options_id      Int?
-  specs_id        Int?
+  type_id         BigInt?
+  manufacture_id  BigInt?
   cars            Cars[]
-  manufacture     Manufacture?  @relation(fields: [manufacture_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Options         Options?      @relation(fields: [options_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Specs           Specs?        @relation(fields: [specs_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  transmission    Transmission? @relation(fields: [transmission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  type            Type?         @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  manufacture     Manufacture?   @relation(fields: [manufacture_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transmission    Transmission?  @relation(fields: [transmission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type            Type?          @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  options         modelOptions[]
+  specs           modelSpecs[]
 }
 
 model Cars {
-  id              Int        @id @default(autoincrement())
+  id              BigInt     @id @default(autoincrement())
   plate           String?    @db.VarChar(25)
-  model_id        Int?
+  model_id        BigInt?
   rentPerDay      Float?
   description     String?    @db.VarChar(255)
   availableAt     DateTime?  @db.Timestamp(6)
-  availability_id Int?
+  availability_id BigInt?
   year            Int?
   image           String?    @db.VarChar(255)
   availability    Available? @relation(fields: [availability_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   model           Models?    @relation(fields: [model_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model modelOptions {
+  model_id  BigInt
+  option_id BigInt
+  model     Models  @relation(fields: [model_id], references: [id], onDelete: Cascade)
+  option    Options @relation(fields: [option_id], references: [id], onDelete: Cascade)
+
+  @@id([model_id, option_id])
+}
+
+model modelSpecs {
+  model_id BigInt
+  spec_id  BigInt
+  model    Models @relation(fields: [model_id], references: [id], onDelete: Cascade)
+  spec     Specs  @relation(fields: [spec_id], references: [id], onDelete: Cascade)
+
+  @@id([model_id, spec_id])
 }

@@ -52,7 +52,7 @@ exports.validateCreateCar = (req, res, next) => {
 
   const validateFileBody = z
     .object({
-      profilePicture: z
+      image: z
         .object({
           name: z.string(),
           data: z.any(),
@@ -98,7 +98,7 @@ exports.validateUpdateCarById = (req, res, next) => {
 
   const validateFileBody = z
     .object({
-      profilePicture: z
+      image: z
         .object({
           name: z.string(),
           data: z.any(),
