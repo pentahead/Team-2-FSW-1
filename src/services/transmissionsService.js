@@ -6,6 +6,15 @@ const { NotFoundError, InternalServerError } = require("../utils/request");
 exports.getTransmissions = (transmission_name) => {
   return transmissionRepository.getTransmissions(transmission_name);
 };
+exports.getTransmissionById = async (id) => {
+  const transmission = await transmissionRepository.getTransmissionById(id);
+
+  if (!transmission) {
+    throw new NotFoundError("Transmission is Not Found!");
+  }
+
+  return transmission;
+};
 
 exports.createTransmission = async (data) => {
   return transmissionRepository.createTransmission(data);

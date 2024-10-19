@@ -5,6 +5,14 @@ exports.getAvailable = (available_status) => {
   return availableRepository.getAvailable(available_status);
 };
 
+exports.getAvailableById = async (id) => {
+  const available = await availableRepository.getAvailableById(id);
+  if (!available) {
+    throw new NotFoundError("Available status is Not Found!");
+  }
+  return available;
+};
+
 exports.createAvailable = async (data) => {
   return availableRepository.createAvailable(data);
 };

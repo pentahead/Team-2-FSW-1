@@ -17,6 +17,20 @@ exports.validateCreateType = (req, res, next) => {
   next();
 };
 
+exports.validateGetTypeById = (req, res, next) => {
+  const validateParams = z.object({
+    id: z.string(),
+  });
+
+  const result = validateParams.safeParse(req.params);
+
+  if (!result.success) {
+    throw new BadRequestError(result.error.errors);
+  }
+
+  next();
+};
+
 exports.validateUpdateType = (req, res, next) => {
   const validateBody = z.object({
     type_name: z.string().min(1, "Nama tipe tidak boleh kosong"),

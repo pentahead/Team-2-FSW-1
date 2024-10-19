@@ -4,14 +4,23 @@ const transmissionService = require("../services/transmissionsService");
 exports.getTransmissions = async (req, res, next) => {
   try {
     const data = await transmissionService.getTransmissions(
-      req.query?.transmission_name 
+      req.query?.transmission_name
     );
     successResponse(res, data);
   } catch (error) {
-    next(error); 
+    next(error);
   }
 };
 
+exports.getTransmissionById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const transmission = await transmissionService.getTransmissionById(id);
+    successResponse(res, transmission);
+  } catch (error) {
+    next(error);
+  }
+};
 exports.createTransmission = async (req, res, next) => {
   try {
     const data = await transmissionService.createTransmission(req.body);

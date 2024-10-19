@@ -7,6 +7,14 @@ exports.getTypes = (type_name) => {
   return typeRepository.getTypes(type_name);
 };
 
+exports.getTypeById = async (id) => {
+  const type = await typeRepository.getTypeById(id);
+  if (!type) {
+    throw new NotFoundError("Type is Not Found!");
+  }
+  return type;
+};
+
 exports.createType = async (data) => {
   return typeRepository.createType(data);
 };

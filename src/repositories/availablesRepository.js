@@ -36,7 +36,6 @@ exports.getAvailableById = async (id) => {
     const available = await prisma.available.findUnique({
       where: {
         id: parseInt(id, 10),
-        include: {},
       },
     });
 

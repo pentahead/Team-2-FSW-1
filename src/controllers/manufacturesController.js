@@ -10,6 +10,18 @@ exports.getManufactures = async (req, res, next) => {
 
   successResponse(res, data);
 };
+
+exports.getManufactureById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const data = await manufactureService.getManufactureById(id);
+    successResponse(res, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.createManufacture = async (req, res, next) => {
   const data = await manufactureService.createManufacture(req.body, req.files);
   successResponse(res, data);

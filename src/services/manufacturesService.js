@@ -19,6 +19,16 @@ exports.createManufacture = async (data) => {
   return manufactureRepository.createManufacture(data);
 };
 
+exports.getManufactureById = (id) => {
+  const manufacture = manufactureRepository.getManufactureById(id);
+
+  if (!manufacture) {
+    throw new NotFoundError("Manufacture is Not Found!");
+  }
+
+  return manufacture;
+};
+
 exports.updateManufacture = async (id, data) => {
   const existingManufacture = await manufactureRepository.getManufactureById(
     id

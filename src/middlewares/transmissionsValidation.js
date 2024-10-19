@@ -17,6 +17,20 @@ exports.validateCreateTransmission = (req, res, next) => {
   next();
 };
 
+exports.validateGetTransmissionById = (req, res, next) => {
+  const validateParams = z.object({
+    id: z.string(),
+  });
+
+  const result = validateParams.safeParse(req.params);
+
+  if (!result.success) {
+    throw new BadRequestError(result.error.errors);
+  }
+
+  next();
+};
+
 exports.validateUpdateTransmission = (req, res, next) => {
   const validateBody = z.object({
     transmission_name: z.string().optional(),

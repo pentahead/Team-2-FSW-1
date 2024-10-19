@@ -5,10 +5,9 @@ exports.validateCreateAvailable = (req, res, next) => {
   const validateBody = z.object({
     available_status: z
       .string()
-      .min(1, "Status ketersediaan tidak boleh kosong"), 
+      .min(1, "Status ketersediaan tidak boleh kosong"),
   });
 
-  // Validasi terhadap body
   try {
     validateBody.parse(req.body);
   } catch (error) {
@@ -17,14 +16,27 @@ exports.validateCreateAvailable = (req, res, next) => {
       .json({ message: "Invalid data", errors: error.errors });
   }
 
-  next(); // Melanjutkan ke middleware berikutnya
+  next();
+};
+
+exports.validateGetAvailableById = (req, res, next) => {
+  const validateParams = z.object({
+    id: z.string(),
+  });
+
+  const result = validateParams.safeParse(req.params);
+  if (!result.success) {
+    throw new BadRequestError(result.error.errors);
+  }
+
+  next();
 };
 
 exports.validateUpdateAvailable = (req, res, next) => {
   const validateBody = z.object({
     available_status: z
       .string()
-      .min(1, "Status ketersediaan tidak boleh kosong"), 
+      .min(1, "Status ketersediaan tidak boleh kosong"),
   });
 
   try {
@@ -35,7 +47,7 @@ exports.validateUpdateAvailable = (req, res, next) => {
       .json({ message: "Invalid data", errors: error.errors });
   }
 
-  next(); 
+  next();
 };
 
 exports.validateDeleteAvailableById = (req, res, next) => {

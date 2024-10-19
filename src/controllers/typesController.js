@@ -3,14 +3,25 @@ const typeService = require("../services/typesService");
 
 exports.getTypes = async (req, res, next) => {
   try {
-    const data = await typeService.getTypes(
-      req.query?.type_name 
-    );
+    const data = await typeService.getTypes(req.query?.type_name);
     successResponse(res, data);
   } catch (error) {
-    next(error); 
+    next(error);
   }
 };
+
+
+
+exports.getTypeById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const data = await typeService.getTypeById(id);
+    successResponse(res, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 exports.createType = async (req, res, next) => {
   try {

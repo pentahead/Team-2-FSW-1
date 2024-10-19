@@ -19,7 +19,7 @@ const router = express.Router();
 router.get("/", getManufactures);
 // router.get("/search", validateGetManufactures, getManufactures);
 router.post("/", validateCreateManufacture, createManufacture);
-// router.get("/:id", validateGetManufactureById, getManufactureById);
+router.get("/:id", validateGetManufactureById, getManufactureById);
 router.put("/:id", validateUpdateManufacture, updateManufacture);
 router.delete("/:id", validateDeleteManufactureById, deleteManufactureById);
 

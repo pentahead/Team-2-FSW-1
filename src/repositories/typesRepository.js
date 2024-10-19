@@ -43,7 +43,7 @@ exports.getTypeById = async (id) => {
   try {
     const type = await prisma.type.findUnique({
       where: {
-        id: parseInt(id, 10),  
+        id: parseInt(id, 10),
       },
     });
 
@@ -62,13 +62,12 @@ exports.getTypeById = async (id) => {
 exports.updateType = async (id, data) => {
   try {
     const updatedType = await prisma.type.update({
-      where: { id: parseInt(id, 10) },  
+      where: { id: parseInt(id, 10) },
       data: {
-        ...data,  
+        ...data,
       },
     });
 
-     
     const serializedType = JSONBigInt.stringify(updatedType);
     return JSONBigInt.parse(serializedType);
   } catch (error) {
@@ -80,13 +79,13 @@ exports.updateType = async (id, data) => {
 exports.deleteTypeById = async (id) => {
   try {
     const deletedType = await prisma.type.delete({
-      where: { id: parseInt(id, 10) }, 
+      where: { id: parseInt(id, 10) },
     });
 
     const serializedType = JSONBigInt.stringify(deletedType);
     return JSONBigInt.parse(serializedType);
   } catch (error) {
     console.error(error);
-    throw new Error("Error deleting type data"); 
+    throw new Error("Error deleting type data");
   }
 };

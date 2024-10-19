@@ -74,6 +74,27 @@ exports.getManufactureById = async (id) => {
   }
 };
 
+exports.getManufactureById = async (id) => {
+  try {
+    const manufacture = await prisma.manufacture.findUnique({
+      where: {
+        id: parseInt(id, 10),
+      },
+      include: {},
+    });
+
+    if (!manufacture) {
+      throw new Error(`Manufacture with id ${id} not found`);
+    }
+
+    const serializedManufacture = JSONBigInt.stringify(manufacture);
+    return JSONBigInt.parse(serializedManufacture);
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error retrieving manufacture data");
+  }
+};
+
 exports.updateManufacture = async (id, data) => {
   try {
     const updatedManufacture = await prisma.manufacture.update({
@@ -95,13 +116,13 @@ exports.updateManufacture = async (id, data) => {
 exports.deleteManufactureById = async (id) => {
   try {
     const deletedManufacture = await prisma.manufacture.delete({
-      where: { id: parseInt(id, 10) }, 
+      where: { id: parseInt(id, 10) },
     });
 
     const serializedManufacture = JSONBigInt.stringify(deletedManufacture);
     return JSONBigInt.parse(serializedManufacture);
   } catch (error) {
     console.error(error);
-    throw new Error("Error deleting manufacture data"); 
+    throw new Error("Error deleting manufacture data");
   }
 };

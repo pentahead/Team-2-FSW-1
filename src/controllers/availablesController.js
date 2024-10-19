@@ -6,6 +6,16 @@ exports.getAvailable = async (req, res, next) => {
   successResponse(res, data);
 };
 
+exports.getAvailableById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const data = await availableService.getAvailableById(id);
+    successResponse(res, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.createAvailable = async (req, res, next) => {
   const data = await availableService.createAvailable(req.body);
   successResponse(res, data);
@@ -33,6 +43,6 @@ exports.deleteAvailableById = async (req, res, next) => {
     const data = await availableService.deleteAvailableById(id);
     successResponse(res, data);
   } catch (error) {
-    next(error); 
+    next(error);
   }
 };
